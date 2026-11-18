@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1220">
+  <meta name="description" content="SKYCAST — a modern, real-time weather dashboard.">
+  <title>SKYCAST — Weather, beautifully clear</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <script defer src="js/config.js"></script>
+  <script defer src="js/weather.js"></script>
+  <script defer src="js/forecast.js"></script>
+  <script defer src="js/location.js"></script>
+  <script defer src="js/favorites.js"></script>
+  <script defer src="js/script.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="SKYCAST home"><span class="brand-mark">☀</span> SKY<span>CAST</span></a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open navigation" aria-expanded="false">☰</button>
+    <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+      <a class="active" href="#home">Home</a><a href="#current">Current</a><a href="#forecast">Forecast</a>
+      <a href="#air">Air quality</a><a href="#settings">Settings</a>
+    </nav>
+    <button class="icon-button theme-toggle" id="themeToggle" aria-label="Toggle light and dark theme">◐</button>
+  </header>
+
+  <main class="shell" id="home">
+    <section class="intro-row">
+      <div><p class="eyebrow">YOUR WORLD, IN WEATHER</p><h1>Know your weather.<br><span>Plan your day.</span></h1></div>
+      <p class="intro-copy">A clearer view of what’s happening outside, wherever life takes you.</p>
+    </section>
+
+    <section class="search-panel" aria-label="Location search">
+      <form id="searchForm" class="search-form">
+        <span class="search-symbol" aria-hidden="true">⌕</span>
+        <label class="sr-only" for="cityInput">Search for a city</label>
+        <input id="cityInput" type="search" placeholder="Search city, town or country…" autocomplete="off" required>
+        <button class="btn btn-primary" type="submit">Search</button>
+      </form>
+      <button class="btn btn-location" id="useLocation">◎ <span>Use my location</span></button>
+      <div class="suggestions" id="suggestions" hidden></div>
+    </section>
+    <div class="status-line" id="statusLine" role="status" aria-live="polite">Loading weather…</div>
+
+    <section class="dashboard-grid" id="current">
+      <article class="hero-weather weather-surface" id="weatherSurface">
+        <div class="hero-top"><div><p class="eyebrow">CURRENT CONDITIONS</p><h2 id="placeName">—</h2><p class="muted" id="placeMeta">Choose a location to begin</p></div><span class="live-pill"><i></i> LIVE DATA</span></div>
+        <div class="hero-main"><div><div class="weather-icon" id="currentIcon" aria-hidden="true">⛅</div><div class="temperature" id="currentTemp">--°</div><p class="condition" id="currentCondition">Waiting for weather data</p></div>
+          <div class="hero-facts"><div><span>FEELS LIKE</span><strong id="feelsLike">—</strong></div><div><span>HIGH / LOW</span><strong id="highLow">—</strong></div><div><span>SUNRISE</span><strong id="sunrise">—</strong></div><div><span>SUNSET</span><strong id="sunset">—</strong></div></div>
+        </div>
+        <div class="hero-bottom"><span id="localClock">Local time —</span><span id="updatedAt">Updated —</span></div>
+      </article>
+
+      <aside class="side-column">
+        <article class="panel favorites-panel"><div class="panel-heading"><div><p class="eyebrow">YOUR PLACES</p><h3>Saved locations</h3></div><button id="saveFavorite" class="icon-button" aria-label="Save current city" title="Save current city">＋</button></div>
+          <div id="favoritesList" class="favorite-list"><p class="muted small">Your saved places will appear here.</p></div>
+        </article>
+        <article class="panel quick-panel"><p class="eyebrow">QUICK DISCOVERY</p><h3>Popular cities</h3><div class="city-chips">
+          <button data-city="London">London</button><button data-city="Tokyo">Tokyo</button><button data-city="New York">New York</button><button data-city="Buea">Buea</button>
+        </div></article>
+      </aside>
+    </section>
+
+    <section class="section-block" aria-labelledby="detailsTitle">
+      <div class="section-heading"><div><p class="eyebrow">AT A GLANCE</p><h2 id="detailsTitle">Weather details</h2></div><p class="muted">The little things that shape your day</p></div>
+      <div class="details-grid" id="detailsGrid">
+        <article class="detail-card"><span>💧</span><p>Humidity</p><strong id="humidity">—</strong><small>Moisture in the air</small></article>
+        <article class="detail-card"><span>➤</span><p>Wind</p><strong id="wind">—</strong><small id="windDirection">Wind conditions</small></article>
+        <article class="detail-card"><span>▤</span><p>Pressure</p><strong id="pressure">—</strong><small>Sea-level pressure</small></article>
+        <article class="detail-card"><span>◉</span><p>Visibility</p><strong id="visibility">—</strong><small>Viewing distance</small></article>
+        <article class="detail-card"><span>☀</span><p>UV index</p><strong id="uv">—</strong><small id="uvHint">Sun exposure level</small></article>
+        <article class="detail-card"><span>☁</span><p>Cloud cover</p><strong id="clouds">—</strong><small>Sky coverage</small></article>
+        <article class="detail-card"><span>◌</span><p>Dew point</p><strong id="dewPoint">—</strong><small>Condensation temperature</small></article>
+      </div>
+    </section>
+
+    <section class="section-block" id="forecast">
+      <div class="section-heading"><div><p class="eyebrow">COMING UP</p><h2>Next 24 hours</h2></div><span class="muted small">Swipe or scroll to explore</span></div>
+      <div class="hourly-track" id="hourlyTrack"><p class="muted">Hourly forecast will appear here.</p></div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading"><div><p class="eyebrow">LOOK AHEAD</p><h2>7-day forecast</h2></div><span class="muted small">A week at a glance</span></div>
+      <div class="daily-grid" id="dailyGrid"><p class="muted">Daily forecast will appear here.</p></div>
+    </section>
+
+    <section class="section-block" id="air">
+      <div class="section-heading"><div><p class="eyebrow">BREATHE EASIER</p><h2>Air quality</h2></div><span class="muted small">Open-Meteo air-quality data</span></div>
+      <article class="panel air-panel">
+        <div class="aqi-summary"><div class="aqi-gauge"><strong id="aqiValue">—</strong><span>European AQI</span></div><div><span class="aqi-category" id="aqiCategory">Awaiting data</span><p id="aqiAdvice" class="muted">Air quality information will be shown when available for this location.</p></div></div>
+        <div class="pollutant-grid">
+          <div><span>PM2.5</span><strong id="pm25">—</strong><small>μg/m³</small></div><div><span>PM10</span><strong id="pm10">—</strong><small>μg/m³</small></div>
+          <div><span>Carbon monoxide</span><strong id="co">—</strong><small>μg/m³</small></div><div><span>Nitrogen dioxide</span><strong id="no2">—</strong><small>μg/m³</small></div><div><span>Ozone</span><strong id="ozone">—</strong><small>μg/m³</small></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading"><div><p class="eyebrow">EXPLORE</p><h2>Weather map</h2></div><span class="muted small">Map layers</span></div>
+      <article class="map-placeholder"><div class="map-art" aria-hidden="true">◎</div><div><h3>Weather maps coming into focus</h3><p>Live map layers require a configured mapping provider. No simulated map is shown.</p><span class="map-tags">Temperature · Precipitation · Clouds · Wind</span></div></article>
+    </section>
+
+    <section class="section-block" id="settings">
+      <div class="section-heading"><div><p class="eyebrow">MAKE IT YOURS</p><h2>Preferences</h2></div></div>
+      <article class="panel settings-grid">
+        <div><label for="tempUnit">Temperature</label><select id="tempUnit"><option value="celsius">Celsius (°C)</option><option value="fahrenheit">Fahrenheit (°F)</option></select></div>
+        <div><label for="windUnit">Wind speed</label><select id="windUnit"><option value="kmh">Kilometres per hour</option><option value="mph">Miles per hour</option></select></div>
+        <div><label for="locationMode">Location mode</label><select id="locationMode"><option value="manual">Manual selection</option><option value="auto">Ask for my location</option></select></div>
+        <div><label for="themeSelect">Appearance</label><select id="themeSelect"><option value="dark">Dark</option><option value="light">Light</option></select></div>
+      </article>
+    </section>
+
+    <section class="section-block alert-section">
+      <div class="section-heading"><div><p class="eyebrow">STAY INFORMED</p><h2>Weather alerts</h2></div></div>
+      <article class="panel"><p class="muted" id="alertsMessage">No weather-alert feed is configured. SKYCAST will not generate or invent warnings.</p></article>
+    </section>
+    <footer><a class="brand" href="#home">☀ SKY<span>CAST</span></a><p>Weather data by <a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Open-Meteo</a>. Always check local authorities for official warnings.</p><span>© <span id="year"></span> SKYCAST</span></footer>
+  </main>
+</body>
+</html>
